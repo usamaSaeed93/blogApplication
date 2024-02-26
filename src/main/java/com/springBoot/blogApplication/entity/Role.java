@@ -12,12 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "roles")
 public class Role {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-@Column(name = "name")
-@NotBlank(message = "Role name is mandatory")
+    @Column(name = "name")
+    @NotBlank(message = "Role name is mandatory")
     private String name;
 
-
+    // Add a constructor that takes the role name as a parameter
+    public Role(String name) {
+        this.name = name;
+    }
 }
+

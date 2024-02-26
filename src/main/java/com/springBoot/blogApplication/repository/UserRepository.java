@@ -1,6 +1,7 @@
 package com.springBoot.blogApplication.repository;
 
 import com.springBoot.blogApplication.entity.User;
+import com.springBoot.blogApplication.services.UserDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
