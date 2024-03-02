@@ -7,4 +7,6 @@ import com.springBoot.blogApplication.payload.LoginDTO;
 public interface AuthService {
     AuthenticationResponse login(LoginDTO loginDTO);
     AuthenticationResponse register(User user);
+
+
 }

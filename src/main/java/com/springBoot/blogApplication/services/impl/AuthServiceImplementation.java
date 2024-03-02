@@ -8,6 +8,7 @@ import com.springBoot.blogApplication.repository.RoleRepository;
 import com.springBoot.blogApplication.repository.UserRepository;
 import com.springBoot.blogApplication.services.AuthService;
 import com.springBoot.blogApplication.services.JWTService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,7 +43,6 @@ public class AuthServiceImplementation implements AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
-
         // Convert role names to Role entities
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findByName("ADMIN")
@@ -58,22 +58,6 @@ public class AuthServiceImplementation implements AuthService {
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }
-
-    public AuthenticationResponse authenticate(User request) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
-                request.getPassword())
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        String token = jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
-    }
-
     @Override
     public AuthenticationResponse login(LoginDTO loginDTO) {
         User user = userRepository.findByUsername(loginDTO.getUsername())
