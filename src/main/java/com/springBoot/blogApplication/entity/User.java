@@ -1,6 +1,6 @@
 package com.springBoot.blogApplication.entity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,19 +21,19 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
 
     @Column(name = "username", nullable = false)
-    @NotBlank(message = "Username is mandatory")
+    @NotNull(message = "Username is mandatory")
     private String username;
 
     @Column(name = "password", nullable = false)
-    @NotBlank(message = "Password is mandatory")
+    @NotNull(message = "Password is mandatory")
     private String password;
 
     @Column(name = "name", nullable = false)
-    @NotBlank(message = "Name is mandatory")
+    @NotNull(message = "Name is mandatory")
     private String name;
 
     @Column(name = "email", nullable = false)
-    @NotBlank(message = "Email is mandatory")
+    @NotNull(message = "Email is mandatory")
     private String email;
 
     @Id

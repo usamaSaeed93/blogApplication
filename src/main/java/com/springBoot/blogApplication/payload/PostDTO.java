@@ -1,5 +1,7 @@
 package com.springBoot.blogApplication.payload;
 
+import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
 
 @Data
@@ -8,9 +10,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDTO {
+    @NotBlank(message = "Title cannot be empty")
     private String title;
+
+    @NotBlank(message = "Content cannot be empty")
     private String content;
-    private String username;
+
+    @NotBlank(message = "Category cannot be empty")
     private String category;
 
+    private Long id;
 }

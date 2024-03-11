@@ -35,12 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        System.out.println("JwtAuthenticationFilter: Intercepting request...");
+
 
         String authHeader = request.getHeader("Authorization");
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-            System.out.println("JwtAuthenticationFilter: No Bearer token found. Skipping authentication.");
             filterChain.doFilter(request, response);
             return;
         }
@@ -49,12 +48,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = jwtService.extractUserName(token);
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            System.out.println("JwtAuthenticationFilter: Validating token...");
+
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtService.isValid(token, userDetails)) {
-                System.out.println("JwtAuthenticationFilter: Token is valid. Creating authentication object.");
+
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );
@@ -62,17 +61,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            } else {
-                System.out.println("JwtAuthenticationFilter: Token is not valid.");
-                System.out.println("JwtAuthenticationFilter: Token expiration: " + jwtService.isTokenExpired(token));
-                System.out.println("JwtAuthenticationFilter: Current date: " + new Date());
-                // Add more details for debugging
-                System.out.println("JwtAuthenticationFilter: Username from token: " + username);
-                System.out.println("JwtAuthenticationFilter: UserDetails username: " + userDetails.getUsername());
             }
         }
 
         filterChain.doFilter(request, response);
-        System.out.println("JwtAuthenticationFilter: Request processed. Authentication completed if applicable.");
     }
 }

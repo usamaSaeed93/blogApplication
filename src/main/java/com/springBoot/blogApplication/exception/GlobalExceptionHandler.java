@@ -8,22 +8,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(), "404", new Date());
-        // Additional logic if needed
+        ErrorDetails errorDetails = new ErrorDetails(404, ex.getMessage(), String.valueOf(new Date().getTime()));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    // Additional @ExceptionHandler methods for other exceptions can be added here
+    @ExceptionHandler(PostCreationException.class)
+    public ResponseEntity<ErrorDetails> handlePostCreationException(PostCreationException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(400, ex.getMessage(), String.valueOf(new Date().getTime()));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGenericException(Exception ex, WebRequest request) {
-        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(), "500", new Date());
+        ErrorDetails errorDetails = new ErrorDetails(500, ex.getMessage(), String.valueOf(new Date().getTime()));
         // Additional logic if needed
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
